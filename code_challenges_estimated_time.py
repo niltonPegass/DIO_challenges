@@ -1,28 +1,28 @@
 from string import Template
 
-# dicionário com os exemplos fornecidos no desafio
-# usados no output para a resposta
+# dicionário com os exemplos fornecidos no
+# desafio usados no output para a resposta
 cadastro_restaurante = {
     "MCDONALDS": {"nome": "Mc Donalds", "tempoEstimadoEntrega": 10},
     "KFC": {"nome": "KFC", "tempoEstimadoEntrega": 25},
     "BURGUERKING": {"nome": "Burguer King", "tempoEstimadoEntrega": 5},
     "GIRAFFAS": {"nome": "Giraffas", "tempoEstimadoEntrega": 35}
 }
-# leitura dos dados fornecidos para o usuário, e utilizados
-# na condicional abaixo
+# leitura dos dados fornecidos para o usuário, e
+# utilizados na condicional abaixo
 nomeRestaurante = input("Digite o nome do restaurante: ")
 tempoEstimadoEntrega = int(input("Digite o tempo de espera: "))
 
-# condicional que testa se o restaurante já existe no cadastro
-# caso exista nem uma tarefa é executada, caso não exista o
-# o os dados do restaurante são adicionados ao dicionário
+# condicional que testa se o restaurante já existe no
+# cadastro caso exista nem uma tarefa é executada, caso não existam
+# os dados do restaurante são adicionados ao dicionário
 if cadastro_restaurante.get(nomeRestaurante.upper().replace(" ", "")):
   print(f"Já existe o restaurante {nomeRestaurante} cadastrado")
 else:
   cadastro_restaurante[nomeRestaurante.upper().replace(" ", "")] = {"nome": nomeRestaurante, "tempoEstimadoEntrega": tempoEstimadoEntrega}
 
-# extração dos dados do dicionário para apresentar na resposta
-# para o usuário
+# extração dos dados do dicionário para apresentar
+# na resposta para o usuário
 nomeRestaurante = cadastro_restaurante[nomeRestaurante.upper().replace(" ", "")]["nome"]
 tempoEstimadoEntrega = cadastro_restaurante[nomeRestaurante.upper().replace(" ", "")]["tempoEstimadoEntrega"]
 
