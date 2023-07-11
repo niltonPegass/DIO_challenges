@@ -85,4 +85,4 @@ while True:
       print("""
 Comando desconhecido
 Selecione uma operação válida
-    """)
+      """)
