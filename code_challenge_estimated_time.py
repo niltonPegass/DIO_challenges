@@ -13,9 +13,10 @@ cadastro_restaurante = {
 nomeRestaurante = input("Digite o nome do restaurante: ")
 tempoEstimadoEntrega = int(input("Digite o tempo de espera: "))
 
-# condicional que testa se o restaurante já existe no
-# cadastro caso exista nem uma tarefa é executada, caso não existam
-# os dados do restaurante são adicionados ao dicionário
+# método "get()" verifica se ja possui o elemento no dicionário
+# caso já exista retorna o valor do dicionário e entra no "if" (já existe o 'elemento')
+# caso não exista retorna "None" e cai no "else" e adicionamos o elemento
+# sem fazer alguma sobreposição em outro previamente existente
 if cadastro_restaurante.get(nomeRestaurante.upper().replace(" ", "")):
   print(f"Já existe o restaurante {nomeRestaurante} cadastrado")
 else:
