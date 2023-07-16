@@ -1,8 +1,12 @@
+import os
+
 menu = '''
-[d] Depositar
-[s] Sacar
-[e] Extrato
-[q] Sair
+INFORME A OPÇÃO DESEJADA:
+
+[d] DEPOSITAR
+[s] SACAR
+[e] EXTRATO
+[q] SAIR
 '''
 # definição de condições e limites
 LIMITE_SAQUES = 3
@@ -23,9 +27,10 @@ operacao_nao_permitida = "Operação não permitida.\n"
 
 while True:
     
-    opcao = input(menu)
+    opcao = input(menu).lower()
 
     if opcao == "d":
+      os.system('clear')
       print("DEPÓSITO\n")
 
       valor_deposito = input("Informe o valor do depósito: R$ ")
@@ -34,11 +39,12 @@ while True:
       if valor_deposito > 0:
         extrato += f"> Depósito de R$ {valor_deposito:.2f} (+)\n" # adiciona a operação unitária de depósito na lista extrato
         saldo += valor_deposito
-        print(saldo)
+
       else:
         print("Informe um valor acima de R$ 0,00")
 
     elif opcao == "s":
+      os.system('clear')
       print("SAQUE\n")
 
       valor_saque = input("Informe o valor do saque: R$ ")
@@ -48,7 +54,7 @@ while True:
       # solicitadas pelo usuário
       validacao_1 = operacoes_realizadas < LIMITE_SAQUES
       validacao_2 = valor_saque + acumulador_valor_saque <= limite
-      validacao_3 = (saldo - valor_saque) > 0
+      validacao_3 = (saldo - valor_saque) >= 0
 
       if validacao_1 == False:
           print(f"{excedeu_LIMITE_SAQUES}{operacao_nao_permitida}")
@@ -73,13 +79,14 @@ while True:
       print(f"O saldo atual é: R$ {saldo:.2f}")
     
     elif opcao == "e":
+      os.system('clear')
       print(f"""
 =========== EXTRATO ===========
 ===      movimentações      ===
 
 {extrato}
 
-> SALDO: R$ {saldo}
+> SALDO: R$ {saldo:.2f}
 ===============================""")
 
     elif opcao == "q":
