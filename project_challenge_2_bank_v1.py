@@ -61,7 +61,7 @@ while True:
 
       # validacao_1 - usuário só pode realizar n operações
       # validacao_2 - usuário só pode realizar R$ x em saques (tanto unitário, quanto somatório)
-      # validacao_3 - usuário só pode realizar saque se tiver saldo acima de R$ 0,00
+      # validacao_3 - usuário só pode realizar saque se tiver saldo acima de R$ 0,00 ou se o valor do saque não deixar saldo negativo
       if validacao_1 and validacao_2 and validacao_3:
 
         extrato += f"> Saque de R$ {valor_saque:.2f} (-)\n" # adiciona a operação unitária de saque na lista extrato
