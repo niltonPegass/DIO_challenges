@@ -8,6 +8,8 @@ INFORME A OPÇÃO DESEJADA:
 [e] EXTRATO
 [q] SAIR
 '''
+
+
 # definição de condições e limites
 LIMITE_SAQUES = 3
 numero_saques = 0
@@ -26,61 +28,64 @@ nao_possui_saldo = "Você não possui saldo suficiente."
 operacao_nao_permitida = "Operação não permitida.\n"
 
 while True:
+
+  opcao = input(menu).lower()
+  
+  if opcao == "d":
+
+    os.system('clear')
+    print("DEPÓSITO\n")
+
+    valor_deposito = input("Informe o valor do depósito: R$ ")
+    valor_deposito = float(valor_deposito)
     
-    opcao = input(menu).lower()
+    if valor_deposito > 0:
+      extrato += f"> Depósito de R$ {valor_deposito:.2f} (+)\n" # adiciona a operação unitária de depósito na lista extrato
+      saldo += valor_deposito
 
-    if opcao == "d":
-      os.system('clear')
-      print("DEPÓSITO\n")
+    else:
+      print("Informe um valor acima de R$ 0,00")
 
-      valor_deposito = input("Informe o valor do depósito: R$ ")
-      valor_deposito = float(valor_deposito)
-      
-      if valor_deposito > 0:
-        extrato += f"> Depósito de R$ {valor_deposito:.2f} (+)\n" # adiciona a operação unitária de depósito na lista extrato
-        saldo += valor_deposito
+  elif opcao == "s":
 
-      else:
-        print("Informe um valor acima de R$ 0,00")
+    os.system('clear')
+    print("SAQUE\n")
 
-    elif opcao == "s":
-      os.system('clear')
-      print("SAQUE\n")
+    valor_saque = input("Informe o valor do saque: R$ ")
+    valor_saque = float(valor_saque)
 
-      valor_saque = input("Informe o valor do saque: R$ ")
-      valor_saque = float(valor_saque)
+    # condições para validação das operações
+    # solicitadas pelo usuário
+    validacao_1 = operacoes_realizadas < LIMITE_SAQUES
+    validacao_2 = valor_saque + acumulador_valor_saque <= limite
+    validacao_3 = (saldo - valor_saque) >= 0
 
-      # condições para validação das operações
-      # solicitadas pelo usuário
-      validacao_1 = operacoes_realizadas < LIMITE_SAQUES
-      validacao_2 = valor_saque + acumulador_valor_saque <= limite
-      validacao_3 = (saldo - valor_saque) >= 0
+    if validacao_1 == False:
+        print(f"{excedeu_LIMITE_SAQUES}{operacao_nao_permitida}")
 
-      if validacao_1 == False:
-          print(f"{excedeu_LIMITE_SAQUES}{operacao_nao_permitida}")
+    if validacao_2 == False:
+        print(f"{excedeu_limite}{operacao_nao_permitida}")
 
-      if validacao_2 == False:
-          print(f"{excedeu_limite}{operacao_nao_permitida}")
+    if validacao_3 == False:
+      print(f"{nao_possui_saldo}{operacao_nao_permitida}")
 
-      if validacao_3 == False:
-        print(f"{nao_possui_saldo}{operacao_nao_permitida}")
+    # validacao_1 - usuário só pode realizar n operações
+    # validacao_2 - usuário só pode realizar R$ x em saques (tanto unitário, quanto somatório)
+    # validacao_3 - usuário só pode realizar saque se tiver saldo acima de R$ 0,00 ou se o valor do saque não deixar saldo negativo
+    if validacao_1 and validacao_2 and validacao_3:
 
-      # validacao_1 - usuário só pode realizar n operações
-      # validacao_2 - usuário só pode realizar R$ x em saques (tanto unitário, quanto somatório)
-      # validacao_3 - usuário só pode realizar saque se tiver saldo acima de R$ 0,00 ou se o valor do saque não deixar saldo negativo
-      if validacao_1 and validacao_2 and validacao_3:
+      extrato += f"> Saque de R$ {valor_saque:.2f} (-)\n" # adiciona a operação unitária de saque na lista extrato
+      saldo -= valor_saque
+      acumulador_valor_saque += valor_saque
+      operacoes_realizadas += 1
 
-        extrato += f"> Saque de R$ {valor_saque:.2f} (-)\n" # adiciona a operação unitária de saque na lista extrato
-        saldo -= valor_saque
-        acumulador_valor_saque += valor_saque
-        operacoes_realizadas += 1
+    print(f"\nO saque acumulado é: R$ {acumulador_valor_saque:.2f}")
+    print(f"O saldo atual é: R$ {saldo:.2f}")
+  
+  elif opcao == "e":
 
-      print(f"O saque acumulado é: R$ {acumulador_valor_saque:.2f}")
-      print(f"O saldo atual é: R$ {saldo:.2f}")
-    
-    elif opcao == "e":
-      os.system('clear')
-      print(f"""
+    os.system('clear')
+    print(f"""
 =========== EXTRATO ===========
 ===      movimentações      ===
 
@@ -89,11 +94,11 @@ while True:
 > SALDO: R$ {saldo:.2f}
 ===============================""")
 
-    elif opcao == "q":
-      break
+  elif opcao == "q":
+    break
 
-    else:
-      print("""
+  else:
+    print("""
 Comando desconhecido
 Selecione uma operação válida
-      """)
+""")
