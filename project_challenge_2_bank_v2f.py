@@ -31,7 +31,7 @@ dica: para vincular um usuário a uma conta filtre a lista de usuários buscando
 # definição de condições e limites
 LIMITE_SAQUES = 3
 numero_saques = 0
-saldo = 200
+saldo = 1000
 limite = 500
 extrato = ""
 
@@ -39,7 +39,7 @@ extrato = ""
 # condições e limites inicialmente estabelecidos
 excedeu_limite = f"Você excedeu o limite diário de R$ {limite:.2f}.\n"
 excedeu_LIMITE_SAQUES = f"Excede o limite de {LIMITE_SAQUES} saques diários.\n"
-nao_possui_saldo = "Você não possui saldo suficiente."
+nao_possui_saldo = "Você não possui saldo suficiente.\n"
 operacao_nao_permitida = "Operação não permitida.\n"
 
 def saque(valor_saque, saldo, limite, extrato):
@@ -82,4 +82,5 @@ def saque(valor_saque, saldo, limite, extrato):
 # parâmetros da função saque
 valor_saque = float(input("Informe o valor do saque: R$ "))
 
-print(saque(valor_saque=valor_saque, saldo=saldo, limite=limite, extrato=extrato))
+funcao_saque = saque(valor_saque=valor_saque, saldo=saldo, limite=limite, extrato=extrato)
+print(funcao_saque)
