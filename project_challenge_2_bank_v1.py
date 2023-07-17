@@ -9,7 +9,6 @@ INFORME A OPÇÃO DESEJADA:
 [q] SAIR
 '''
 
-
 # definição de condições e limites
 LIMITE_SAQUES = 3
 numero_saques = 0
