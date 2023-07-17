@@ -26,7 +26,7 @@ definições e regras:
 		~ o usuário pode ter mais de uma conta, mas uma conta pertence somente a um usuário;
 
 dica: para vincular um usuário a uma conta filtre a lista de usuários buscando o número do CPF informado para cada usuário da lista - se não encontrar um usuário, não pode criar uma conta (não pode haver contas sem usuários)
-""" 
+"""
 
 # definição de condições e limites
 LIMITE_SAQUES = 3
