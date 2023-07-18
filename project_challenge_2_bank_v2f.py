@@ -6,7 +6,7 @@ definições e regras:
 - separar em funções (saque, depósito e extrato);
 	* função saque: argumentos apenas por nome (keyword only) - ex: saldo=saldo, valor=valor;
         ~ sugestão de argumentos: saldo, valor, extrato, limite, numero_saques, limite_saques;
-		~ sugestão de retorno: saldo, extrato;
+        ~ sugestão de retorno: saldo, extrato;
 	* função depósito: argumentos apenas por posição (positional only)
 		~ sugestão de argumentos: saldo, valor, extrato;
 		~ sugestão de retorno: saldo e extrato;
