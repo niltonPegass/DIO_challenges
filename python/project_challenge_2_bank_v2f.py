@@ -1,37 +1,46 @@
 """
 aprimoramento do "challenge_2_bank_operations_1.py"
-utilizando "função" para otimização
+utilizando "funções" para otimização
 
 definições e regras:
-- separar em funções (saque, depósito e extrato);
-	* função saque: argumentos apenas por nome (keyword only) - ex: saldo=saldo, valor=valor;
-        ~ sugestão de argumentos: saldo, valor, extrato, limite, numero_saques, limite_saques;
-        ~ sugestão de retorno: saldo, extrato;
-	* função depósito: argumentos apenas por posição (positional only)
-		~ sugestão de argumentos: saldo, valor, extrato;
-		~ sugestão de retorno: saldo e extrato;
-	* função extrato: argumentos por posição e por nome (positional only e keyword only)
-		~ argumentos posicionais: saldo;
-		~ argumentos nomeados: extrato;
-		
+FEITO       - separar em funções (saque, depósito e extrato);
+FEITO       * função saque: argumentos apenas por nome (keyword only) - ex: saldo=saldo, valor=valor;
+FEITO            ~ sugestão de argumentos: saldo, valor, extrato, limite, numero_saques, limite_saques;
+FEITO            ~ sugestão de retorno: saldo, extrato;
+FEITO       * função depósito: argumentos apenas por posição (positional only)
+FEITO           ~ sugestão de argumentos: saldo, valor, extrato;
+FEITO           ~ sugestão de retorno: saldo e extrato;
+FEITO       * função extrato: argumentos por posição e por nome (positional only e keyword only)
+FEITO           ~ argumentos posicionais: saldo;
+FEITO           ~ argumentos nomeados: extrato;
+    
 - criar duas novas: usuário (cliente); conta corrente (vincular com usuário);
-	* usuário;
-		~ armazenar usuários em uma lista - composto por nome, data de nascimento, CPF e endereço;
-			~ endereço é uma string com formato "logradouro, nº - bairro - cidade/sigla estado";
-			~ CPF: armazenar somente os números;
-			~ NÃO pode ser possível cadastrar dois usuários com CPFs iguais;
-	* conta-corrente - composta por agência, número da conta e usuário.
-		~ o número da conta é sequencial, iniciando em 1;
-		~ o número da agência é fixo: "0001";
-		~ o usuário pode ter mais de uma conta, mas uma conta pertence somente a um usuário;
+* usuário;
+    ~ armazenar usuários em uma lista - composto por nome, data de nascimento, CPF e endereço;
+        ~ endereço é uma string com formato "logradouro, nº - bairro - cidade/sigla estado";
+        ~ CPF: armazenar somente os números;
+        ~ NÃO pode ser possível cadastrar dois usuários com CPFs iguais;
+* conta-corrente - composta por agência, número da conta e usuário.
+    ~ o número da conta é sequencial, iniciando em 1;
+    ~ o número da agência é fixo: "0001";
+    ~ o usuário pode ter mais de uma conta, mas uma conta pertence somente a um usuário;
 
 dica: para vincular um usuário a uma conta filtre a lista de usuários buscando o número do CPF informado para cada usuário da lista - se não encontrar um usuário, não pode criar uma conta (não pode haver contas sem usuários)
 """
 
+menu = '''
+INFORME A OPÇÃO DESEJADA:
+
+[d] DEPOSITAR
+[s] SACAR
+[e] EXTRATO
+[q] SAIR
+'''
+
 # definição de condições e limites
 LIMITE_SAQUES = 3
 numero_saques = 0
-saldo = 1000
+saldo = 0
 limite = 500
 extrato = ""
 
@@ -42,8 +51,8 @@ excedeu_LIMITE_SAQUES = f"Excede o limite de {LIMITE_SAQUES} saques diários.\n"
 nao_possui_saldo = "Você não possui saldo suficiente.\n"
 operacao_nao_permitida = "Operação não permitida.\n"
 
-def saque(valor_saque, saldo, limite, extrato):
-    print("SAQUE\n")
+def saque(valor_saque, limite, extrato):
+    global saldo
 
     acumulador_valor_saque = 0 # inicializador de acumulador dos valores sacados
     operacoes_realizadas = 0 # inicializador das ações de saque do usuário
@@ -62,25 +71,64 @@ def saque(valor_saque, saldo, limite, extrato):
         print(f"{nao_possui_saldo}{operacao_nao_permitida}")
 
     # validacao_1 - usuário só pode realizar n operações
-    # validacao_2 - usuário só pode realizar R$ x em saques (tanto unitário, quanto somatório)
+    # validacao_2 - usuário só pode realizar R$ X em saques (tanto unitário, quanto somatório)
     # validacao_3 - usuário só pode realizar saque se tiver saldo acima de R$ 0,00 ou se o valor do saque não deixar saldo negativo
     elif validacao_1 and validacao_2 and validacao_3:
 
-        extrato += f"> Saque de R$ {valor_saque:.2f} (-)\n" # adiciona a operação unitária de saque na lista extrato
+        # extrato += # valor_saque f"> Saque de R$ {valor_saque:.2f} (-)\n" # adiciona a operação unitária de saque na lista extrato
         saldo -= valor_saque
         acumulador_valor_saque += valor_saque
         operacoes_realizadas += 1
-    
-#   elif validacao_4 == False:
-#       print(f"{excedeu_saldo} {operacao_nao_permitida}")
 
     print(f"O saque acumulado é: R$ {acumulador_valor_saque:.2f}")
     print(f"O saldo atual é: R$ {saldo:.2f}")
 
-    return
+def deposito(valor_deposito, extrato):
+    global saldo
+    if valor_deposito > 0:
+      # extrato += valor_deposito # f"> Depósito de R$ {valor_deposito:.2f} (+)\n" # adiciona a operação unitária de depósito na lista extrato
+      saldo += valor_deposito
+      print(f"Operação bem sucedida!\nO saldo atual é: R$ {saldo:.2f}")
 
-# parâmetros da função saque
-valor_saque = float(input("Informe o valor do saque: R$ "))
+    else:
+      print("Informe um valor acima de R$ 0,00")
 
-funcao_saque = saque(valor_saque=valor_saque, saldo=saldo, limite=limite, extrato=extrato)
-print(funcao_saque)
+def extrato(extrato):
+        
+    print(f"""
+=========== EXTRATO ===========
+===      movimentações      ===
+
+{extrato}
+
+> SALDO: R$ {saldo:.2f}
+===============================""")
+
+while True:
+    
+    opcao = input(menu).lower()
+
+    if opcao == "d":
+        print('DEPÓSITO')
+        valor_deposito = float(input("Informe o valor do depósito: R$ "))
+        funcao_deposito = deposito(valor_deposito, extrato)
+        print(f'o saldo é {saldo}')
+    
+    elif opcao == "s":
+        print('SAQUE')
+        valor_saque = float(input("Informe o valor do saque: R$ "))
+        funcao_saque = saque(valor_saque=valor_saque, limite=limite, extrato=extrato)
+        print(f'o saldo é {saldo}')
+
+    elif opcao == "e":
+        print('EXTRATO')
+        funcao_extrato = extrato(extrato=extrato)
+
+    elif opcao == "q":
+        print('SAINDO DO SISTEMA...')
+        break
+    
+    else:
+        print("""
+Comando desconhecido
+Selecione uma operação válida""")
