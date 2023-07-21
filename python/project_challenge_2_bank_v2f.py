@@ -35,7 +35,8 @@ INFORME A OPÇÃO DESEJADA:
 [s] SACAR
 [e] EXTRATO
 [q] SAIR
-'''
+
+=> '''
 
 # definição de condições e limites
 LIMITE_SAQUES = 3
@@ -51,15 +52,14 @@ excedeu_LIMITE_SAQUES = f"Excede o limite de {LIMITE_SAQUES} saques diários.\n"
 nao_possui_saldo = "Você não possui saldo suficiente.\n"
 operacao_nao_permitida = "Operação não permitida.\n"
 
-def saque(valor_saque, limite, extrato):
-    global saldo
-
+def saque(*, valor_saque, limite, saldo, extrato):
+    
     acumulador_valor_saque = 0 # inicializador de acumulador dos valores sacados
     operacoes_realizadas = 0 # inicializador das ações de saque do usuário
 
     validacao_1 = operacoes_realizadas < LIMITE_SAQUES
     validacao_2 = valor_saque + acumulador_valor_saque <= limite
-    validacao_3 = (saldo - valor_saque) > 0
+    validacao_3 = (saldo - valor_saque) >= 0
 
     if validacao_1 == False:
         print(f"{excedeu_LIMITE_SAQUES}{operacao_nao_permitida}")
@@ -83,17 +83,21 @@ def saque(valor_saque, limite, extrato):
     print(f"O saque acumulado é: R$ {acumulador_valor_saque:.2f}")
     print(f"O saldo atual é: R$ {saldo:.2f}")
 
-def deposito(valor_deposito, extrato):
-    global saldo
-    if valor_deposito > 0:
-      # extrato += valor_deposito # f"> Depósito de R$ {valor_deposito:.2f} (+)\n" # adiciona a operação unitária de depósito na lista extrato
+    return saldo
+
+def deposito(saldo, valor_deposito, extrato, /):
+    
+    if valor_deposito >= 0:
+      extrato += valor_deposito # f"> Depósito de R$ {valor_deposito:.2f} (+)\n" # adiciona a operação unitária de depósito na lista extrato
       saldo += valor_deposito
       print(f"Operação bem sucedida!\nO saldo atual é: R$ {saldo:.2f}")
 
     else:
       print("Informe um valor acima de R$ 0,00")
 
-def extrato(extrato):
+    return saldo
+
+def extrato(saldo, extrato):
         
     print(f"""
 =========== EXTRATO ===========
@@ -104,6 +108,7 @@ def extrato(extrato):
 > SALDO: R$ {saldo:.2f}
 ===============================""")
 
+
 while True:
     
     opcao = input(menu).lower()
@@ -111,18 +116,18 @@ while True:
     if opcao == "d":
         print('DEPÓSITO')
         valor_deposito = float(input("Informe o valor do depósito: R$ "))
-        funcao_deposito = deposito(valor_deposito, extrato)
-        print(f'o saldo é {saldo}')
+        funcao_deposito = deposito(saldo, valor_deposito, extrato)
+        print(f'teste_saldo: {saldo}')
     
     elif opcao == "s":
         print('SAQUE')
         valor_saque = float(input("Informe o valor do saque: R$ "))
-        funcao_saque = saque(valor_saque=valor_saque, limite=limite, extrato=extrato)
-        print(f'o saldo é {saldo}')
+        funcao_saque = saque(valor_saque=valor_saque, limite=limite, extrato=extrato, saldo=saldo)
+        print(f'teste_saldo {saldo}')
 
     elif opcao == "e":
         print('EXTRATO')
-        funcao_extrato = extrato(extrato=extrato)
+        funcao_extrato = extrato(saldo, extrato=extrato)
 
     elif opcao == "q":
         print('SAINDO DO SISTEMA...')
