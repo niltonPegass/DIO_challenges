@@ -33,9 +33,21 @@ INFORME A OPÇÃO DESEJADA:
 [d] DEPOSITAR
 [s] SACAR
 [e] EXTRATO
+
+[c] CADASTRAR CLIENTE
+[l] LISTAR CLIENTES
+[s] PROCURAR POR CLIENTE
+
 [q] SAIR
 
 >> '''
+
+cadastro_usuario = {
+    "12345678910": {"nome": "OBI-WAN", "nascimento": "01-01-1974", "logradouro": "<logradouro>", "num_casa": "<num casa>", "bairro": "<bairro>", "cidade": "<cidade>", "estado": "<estado-sigla>"},
+    "98765432110": {"nome": "ANAKIN", "nascimento": "01-01-1974", "logradouro": "<logradouro>", "num_casa": "<num casa>", "bairro": "<bairro>", "cidade": "<cidade>", "estado": "<estado-sigla>"},
+    "12345678911": {"nome": "LEIA", "nascimento": "01-01-1974",  "logradouro": "<logradouro>", "num_casa": "<num casa>", "bairro": "<bairro>", "cidade": "<cidade>", "estado": "<estado-sigla>"},
+    "98765432111": {"nome": "PADMÉ", "nascimento": "01-01-1974", "logradouro": "<logradouro>", "num_casa": "<num casa>", "bairro": "<bairro>", "cidade": "<cidade>", "estado": "<estado-sigla>"}
+}
 
 # definição de condições e limites
 LIMITE_SAQUES = 3
@@ -52,9 +64,8 @@ excedeu_limite = f"[!] Você excedeu o limite diário de R$ {limite:.2f}."
 nao_possui_saldo = "[!] Você não possui saldo suficiente."
 operacao_nao_permitida = "Operação não permitida:\n"
 
-def fdeposito(saldo, extrato, valor_deposito, /): # argumentos posicionais antes da barra
+def fdeposito(saldo, extrato, valor_deposito, /):
     
-
     if valor_deposito >= 0:
         saldo += valor_deposito
         extrato += (f"> Depósito:\tR$ {valor_deposito:.2f} (+)\n")
@@ -64,7 +75,7 @@ def fdeposito(saldo, extrato, valor_deposito, /): # argumentos posicionais antes
         print("Informe um valor acima de R$ 0,00")
 
     return saldo, extrato
-def fsaque(*, valor_saque, limite, saldo, extrato): # argumentos nomeados depois do asteristco
+def fsaque(*, valor_saque, limite, saldo, extrato):
     
     global acumulador_valor_saque
     global numero_saques
@@ -105,6 +116,29 @@ def fextrato(saldo, /, *, extrato):
 
 > SALDO: R$ {saldo:.2f}
 ===============================""")
+def cadastrar_usuario(cpf):
+    
+    if cadastro_usuario.get(cpf):
+        print(f"Cliente {cpf} já possui cadastro")
+
+    else:
+        nome = input("Nome: ").upper()
+        nascimento = input("Nascimento: ")
+        logradouro = input("Rua: ").upper()
+        num_casa = int(input("Número: "))
+        bairro = input("Bairro: ").upper()
+        cidade = input("Cidade: ").upper()
+        estado = input("Estado (sigla): ").upper()
+        cadastro_usuario[cpf] = {"nome": nome, "nascimento": nascimento, "logradouro": logradouro, "num_casa": num_casa, "bairro": bairro, "cidade": cidade, "estado": estado}
+
+    nome = cadastro_usuario[cpf]["nome"]
+    nascimento = cadastro_usuario[cpf]["nascimento"]
+    print(nome, nascimento)
+def listar_usuario():
+
+    for chave, valor in cadastro_usuario.items():
+        print(chave, valor)
+
 
 while True:
     
@@ -127,6 +161,15 @@ while True:
     elif opcao == "e":
         print('EXTRATO')
         fextrato(saldo, extrato=extrato)
+
+    elif opcao == "c":
+        print("CADASTRAR NOVO USUÁRIO")
+        cpf = input("Digite o CPF do cliente: ")
+        cadastrar_usuario(cpf)
+
+    elif opcao == "l":
+        print("LISTAR CLIENTES")
+        listar_usuario()
     
     else:
         print("""
