@@ -2,7 +2,6 @@
 aprimoramento do "challenge_2_bank_operations_1.py"
 utilizando "funções" para otimização
 
-definições e regras:
 FEITO       - separar em funções (saque, depósito e extrato);
 FEITO       * função saque: argumentos apenas por nome (keyword only) - ex: saldo=saldo, valor=valor;
 FEITO            ~ sugestão de argumentos: saldo, valor, extrato, limite, numero_saques, limite_saques;
@@ -40,6 +39,7 @@ INFORME A OPÇÃO DESEJADA:
 
 # definição de condições e limites
 LIMITE_SAQUES = 3
+acumulador_valor_saque = 0
 numero_saques = 0
 saldo = 0
 limite = 500
@@ -47,10 +47,10 @@ extrato = ""
 
 # mensagens para operações do usuário fora das 
 # condições e limites inicialmente estabelecidos
-excedeu_LIMITE_SAQUES = f"Excede o limite de {LIMITE_SAQUES} saques diários.\n"
-excedeu_limite = f"Você excedeu o limite diário de R$ {limite:.2f}.\n"
-nao_possui_saldo = "Você não possui saldo suficiente.\n"
-operacao_nao_permitida = "Operação não permitida.\n"
+excedeu_LIMITE_SAQUES = f"[!] Excede o limite de {LIMITE_SAQUES} saques diários."
+excedeu_limite = f"[!] Você excedeu o limite diário de R$ {limite:.2f}."
+nao_possui_saldo = "[!] Você não possui saldo suficiente."
+operacao_nao_permitida = "Operação não permitida:\n"
 
 def fdeposito(saldo, extrato, valor_deposito, /): # argumentos posicionais antes da barra
     
@@ -58,11 +58,7 @@ def fdeposito(saldo, extrato, valor_deposito, /): # argumentos posicionais antes
     if valor_deposito >= 0:
         saldo += valor_deposito
         extrato += (f"> Depósito:\tR$ {valor_deposito:.2f} (+)\n")
-        print(f"Operação bem sucedida!\nO saldo atual é: R$ {saldo:.2f}")
-
-        #for n in acumulador_depositos:
-            #extrato = [f"> Depósito de R$ {valor_deposito:.2f} (-)\n"]
-            #extrato.append(extrato)
+        print(f"\nOperação bem sucedida!\nO saldo atual é: R$ {saldo:.2f}")
 
     else:
         print("Informe um valor acima de R$ 0,00")
@@ -70,36 +66,36 @@ def fdeposito(saldo, extrato, valor_deposito, /): # argumentos posicionais antes
     return saldo, extrato
 def fsaque(*, valor_saque, limite, saldo, extrato): # argumentos nomeados depois do asteristco
     
-    acumulador_valor_saque = 0  # inicializador de acumulador dos valores sacados
-    operacoes_realizadas = 0    # inicializador das ações de saque do usuário
+    global acumulador_valor_saque
+    global numero_saques
 
-    validacao_1 = operacoes_realizadas < LIMITE_SAQUES
-    validacao_2 = valor_saque + acumulador_valor_saque <= limite
+    validacao_1 = valor_saque + acumulador_valor_saque <= limite
+    validacao_2 = numero_saques < LIMITE_SAQUES
     validacao_3 = (saldo - valor_saque) >= 0
-
-    if validacao_1 == False:
-        print(f"{excedeu_LIMITE_SAQUES}{operacao_nao_permitida}")
+    
+    if validacao_1 == False and validacao_3 == True:
+        print(f"\n{operacao_nao_permitida}{excedeu_limite}\n")
 
     if validacao_2 == False:
-        print(f"{excedeu_limite}{operacao_nao_permitida}")
+        print(f"\n{operacao_nao_permitida}{excedeu_LIMITE_SAQUES}\n")
 
     if validacao_3 == False:
-        print(f"{nao_possui_saldo}{operacao_nao_permitida}")
+        print(f"\n{operacao_nao_permitida}{nao_possui_saldo}\n")
 
-    # validacao_1 - só pode realizar n operações "por dia"
-    # validacao_2 - só pode realizar R$ X em saques (tanto unitário, quanto somatório)
+    # validacao_1 - só pode realizar R$ X em saques (tanto unitário, quanto somatório)
+    # validacao_2 - só pode realizar n operações "por dia"
     # validacao_3 - validação de saldo acima de R$ 0,00 ou se saque não deixa saldo negativo
     elif validacao_1 and validacao_2 and validacao_3:
 
-        extrato += (f"> Saque:\tR$ {valor_deposito:.2f} (-)\n")
+        extrato += (f"> Saque:\tR$ {valor_saque:.2f} (-)\n")
         saldo -= valor_saque
         acumulador_valor_saque += valor_saque
-        operacoes_realizadas += 1
+        numero_saques += 1
 
     print(f"O saldo atual é: R$ {saldo:.2f}")
 
     return saldo, extrato
-def fextrato(saldo, extrato, /):
+def fextrato(saldo, /, *, extrato):
     
     print(f"""
 =========== EXTRATO ===========
@@ -130,7 +126,7 @@ while True:
 
     elif opcao == "e":
         print('EXTRATO')
-        fextrato(saldo, extrato)
+        fextrato(saldo, extrato=extrato)
     
     else:
         print("""
