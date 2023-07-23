@@ -14,17 +14,18 @@ FEITO           ~ argumentos posicionais: saldo;
 FEITO           ~ argumentos nomeados: extrato;
     
 - criar duas novas: usuário (cliente); conta corrente (vincular com usuário);
-* usuário;
-    ~ armazenar usuários em uma lista - composto por nome, data de nascimento, CPF e endereço;
-        ~ endereço é uma string com formato "logradouro, nº - bairro - cidade/sigla estado";
-        ~ CPF: armazenar somente os números;
-        ~ NÃO pode ser possível cadastrar dois usuários com CPFs iguais;
+FEITO       * usuário;
+FEITO           ~ armazenar usuários em uma lista - composto por nome, data de nascimento, CPF e endereço;
+FEITO               ~ endereço é uma string com formato "logradouro, nº - bairro - cidade/sigla estado";
+FEITO               ~ CPF: armazenar somente os números;
+FEITO               ~ NÃO pode ser possível cadastrar dois usuários com CPFs iguais;
 * conta-corrente - composta por agência, número da conta e usuário.
     ~ o número da conta é sequencial, iniciando em 1;
     ~ o número da agência é fixo: "0001";
     ~ o usuário pode ter mais de uma conta, mas uma conta pertence somente a um usuário;
 
-dica: para vincular um usuário a uma conta filtre a lista de usuários buscando o número do CPF informado para cada usuário da lista - se não encontrar um usuário, não pode criar uma conta (não pode haver contas sem usuários)
+dica: para vincular um usuário a uma conta filtre a lista de usuários buscando o número do CPF informado para
+cada usuário da lista - se não encontrar um usuário, não pode criar uma conta (não pode haver contas sem usuários)
 """
 
 menu = '''
@@ -36,17 +37,43 @@ INFORME A OPÇÃO DESEJADA:
 
 [c] CADASTRAR CLIENTE
 [l] LISTAR CLIENTES
-[s] PROCURAR POR CLIENTE
+[p] PROCURAR POR CLIENTE
 
 [q] SAIR
 
 >> '''
 
 cadastro_usuario = {
-    "12345678910": {"nome": "OBI-WAN", "nascimento": "01-01-1974", "logradouro": "<logradouro>", "num_casa": "<num casa>", "bairro": "<bairro>", "cidade": "<cidade>", "estado": "<estado-sigla>"},
-    "98765432110": {"nome": "ANAKIN", "nascimento": "01-01-1974", "logradouro": "<logradouro>", "num_casa": "<num casa>", "bairro": "<bairro>", "cidade": "<cidade>", "estado": "<estado-sigla>"},
-    "12345678911": {"nome": "LEIA", "nascimento": "01-01-1974",  "logradouro": "<logradouro>", "num_casa": "<num casa>", "bairro": "<bairro>", "cidade": "<cidade>", "estado": "<estado-sigla>"},
-    "98765432111": {"nome": "PADMÉ", "nascimento": "01-01-1974", "logradouro": "<logradouro>", "num_casa": "<num casa>", "bairro": "<bairro>", "cidade": "<cidade>", "estado": "<estado-sigla>"}
+    "12345678910": {"nome": "OBI-WAN",
+                    "nascimento": "01-01-1974",
+                    "logradouro": "<logradouro>", 
+                    "num_casa": "<num casa>",
+                    "bairro": "<bairro>",
+                    "cidade": "<cidade>",
+                    "estado": "<estado-sigla>"},
+
+    "98765432110": {"nome": "ANAKIN", 
+                    "nascimento": "01-01-1974",
+                    "logradouro": "<logradouro>", 
+                    "num_casa": "<num casa>",
+                    "bairro": "<bairro>",
+                    "cidade": "<cidade>",
+                    "estado": "<estado-sigla>"},
+
+    "12345678911": {"nome": "LEIA",
+                    "nascimento": "01-01-1974",
+                    "logradouro": "<logradouro>",
+                    "num_casa": "<num casa>",
+                    "bairro": "<bairro>",
+                    "cidade": "<cidade>",
+                    "estado": "<estado-sigla>"},
+    "98765432111": {"nome": "PADMÉ",
+                    "nascimento": "01-01-1974",
+                    "logradouro": "<logradouro>",
+                    "num_casa": "<num casa>",
+                    "bairro": "<bairro>",
+                    "cidade": "<cidade>",
+                    "estado": "<estado-sigla>"}
 }
 
 # definição de condições e limites
@@ -136,9 +163,17 @@ def cadastrar_usuario(cpf):
     print(nome, nascimento)
 def listar_usuario():
 
-    for chave, valor in cadastro_usuario.items():
-        print(chave, valor)
-
+    for usuario in cadastro_usuario:
+        print(f"NOME: {cadastro_usuario[usuario]['nome']} - CPF: {usuario}\nDATA DE NASCIMENTO: {cadastro_usuario[usuario]['nascimento']}\n")
+def procurar_usuario():
+    
+    usuario_procurado = input("Informe o CPF procurado: ")
+    cpf = usuario_procurado
+    if cpf in cadastro_usuario:
+        valor_encontrado = cadastro_usuario[cpf]
+        print(f"\nUSUÁRIO ENCONTRADO\nNOME: {valor_encontrado['nome']}\nDATA DE NASCIMENTO: {valor_encontrado['nascimento']}")
+    else:
+        print(f"\nUSUÁRIO NÃO ENCONTRADO\nNÃO EXISTE CLIENTE CADASTRADO COM O CPF {cpf}")
 
 while True:
     
@@ -149,27 +184,31 @@ while True:
         break
 
     elif opcao == "d":
-        print('DEPÓSITO')
+        print('DEPÓSITO\n')
         valor_deposito = float(input("Informe o valor do depósito: R$ "))
         saldo, extrato = fdeposito(saldo, extrato, valor_deposito)
     
     elif opcao == "s":
-        print('SAQUE')
+        print('SAQUE\n')
         valor_saque = float(input("Informe o valor do saque: R$ "))
         saldo, extrato = fsaque(valor_saque=valor_saque, limite=limite, extrato=extrato, saldo=saldo)
 
     elif opcao == "e":
-        print('EXTRATO')
+        print('EXTRATO\n')
         fextrato(saldo, extrato=extrato)
 
     elif opcao == "c":
-        print("CADASTRAR NOVO USUÁRIO")
+        print("CADASTRAR NOVO USUÁRIO\n")
         cpf = input("Digite o CPF do cliente: ")
         cadastrar_usuario(cpf)
 
     elif opcao == "l":
-        print("LISTAR CLIENTES")
+        print("LISTAR CLIENTES\n")
         listar_usuario()
+
+    elif opcao == "p":
+        print("PROCURAR POR CLIENTE\n")
+        procurar_usuario()
     
     else:
         print("""
