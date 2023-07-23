@@ -31,52 +31,34 @@ cada usuário da lista - se não encontrar um usuário, não pode criar uma cont
 menu = '''
 INFORME A OPÇÃO DESEJADA:
 
-[d] DEPOSITAR
-[s] SACAR
-[e] EXTRATO
+[D] DEPOSITAR
+[S] SACAR
+[E] EXTRATO
 
-[c] CADASTRAR CLIENTE
-[l] LISTAR CLIENTES
-[p] PROCURAR POR CLIENTE
+[C] CADASTRAR CLIENTE
+[L] LISTAR CLIENTES
+[P] PROCURAR POR CLIENTE
 
-[q] SAIR
+[N] CADASTRAR CONTA
+[M] LISTAR CONTAS
+
+[Q] SAIR
 
 >> '''
 
 cadastro_usuario = {
-    "12345678910": {"nome": "OBI-WAN",
-                    "nascimento": "01-01-1974",
-                    "logradouro": "<logradouro>", 
-                    "num_casa": "<num casa>",
-                    "bairro": "<bairro>",
-                    "cidade": "<cidade>",
-                    "estado": "<estado-sigla>"},
-
-    "98765432110": {"nome": "ANAKIN", 
-                    "nascimento": "01-01-1974",
-                    "logradouro": "<logradouro>", 
-                    "num_casa": "<num casa>",
-                    "bairro": "<bairro>",
-                    "cidade": "<cidade>",
-                    "estado": "<estado-sigla>"},
-
-    "12345678911": {"nome": "LEIA",
-                    "nascimento": "01-01-1974",
-                    "logradouro": "<logradouro>",
-                    "num_casa": "<num casa>",
-                    "bairro": "<bairro>",
-                    "cidade": "<cidade>",
-                    "estado": "<estado-sigla>"},
-    "98765432111": {"nome": "PADMÉ",
-                    "nascimento": "01-01-1974",
-                    "logradouro": "<logradouro>",
-                    "num_casa": "<num casa>",
-                    "bairro": "<bairro>",
-                    "cidade": "<cidade>",
-                    "estado": "<estado-sigla>"}
+"12345678910": {"nome": "OBI-WAN", "nascimento": "01-01-1974", "logradouro": "<logradouro>", "num_casa": "<num casa>","bairro": "<bairro>","cidade": "<cidade>","estado": "<estado-sigla>"},
+"98765432110": {"nome": "ANAKIN", "nascimento": "01-01-1974", "logradouro": "<logradouro>", "num_casa": "<num casa>","bairro": "<bairro>","cidade": "<cidade>","estado": "<estado-sigla>"},
+"12345678911": {"nome": "LEIA", "nascimento": "01-01-1974", "logradouro": "<logradouro>", "num_casa": "<num casa>", "bairro": "<bairro>", "cidade": "<cidade>", "estado": "<estado-sigla>"},
+"98765432111": {"nome": "PADMÉ", "nascimento": "01-01-1974", "logradouro": "<logradouro>", "num_casa": "<num casa>", "bairro": "<bairro>", "cidade": "<cidade>", "estado": "<estado-sigla>"}
+}
+cadastro_conta = {
+"12345678910": {"agencia": "0001", "conta": 1, "usuario": "12345678910"},
+"98765432110": {"agencia": "0001", "conta": 2, "usuario": "98765432110"},
+"12345678911": {"agencia": "0001", "conta": 3, "usuario": "12345678911"},
+"98765432111": {"agencia": "0001", "conta": 4, "usuario": "98765432111"},
 }
 
-# definição de condições e limites
 LIMITE_SAQUES = 3
 acumulador_valor_saque = 0
 numero_saques = 0
@@ -84,22 +66,20 @@ saldo = 0
 limite = 500
 extrato = ""
 
-# mensagens para operações do usuário fora das 
-# condições e limites inicialmente estabelecidos
-excedeu_LIMITE_SAQUES = f"[!] Excede o limite de {LIMITE_SAQUES} saques diários."
-excedeu_limite = f"[!] Você excedeu o limite diário de R$ {limite:.2f}."
-nao_possui_saldo = "[!] Você não possui saldo suficiente."
-operacao_nao_permitida = "Operação não permitida:\n"
+excedeu_LIMITE_SAQUES = f"[!] EXCEDE O LIMITE DE {LIMITE_SAQUES} SAQUES DIÁRIOS"
+excedeu_limite = f"[!] VOCÊ EXCEDEU O LIMITE DIÁRIO DE R$ {limite:.2f}."
+nao_possui_saldo = "[!] VOCÊ NÃO POSSUI SALDO SUFICIENTE"
+operacao_nao_permitida = "[!] OPERAÇÃO NÃO PERMITIDA\n"
 
 def fdeposito(saldo, extrato, valor_deposito, /):
     
     if valor_deposito >= 0:
         saldo += valor_deposito
-        extrato += (f"> Depósito:\tR$ {valor_deposito:.2f} (+)\n")
-        print(f"\nOperação bem sucedida!\nO saldo atual é: R$ {saldo:.2f}")
+        extrato += (f"> DEPÓSITO:\tR$ {valor_deposito:.2f} (+)\n")
+        print(f"\n>> OPERAÇÃO BEM SUCEDIDA!\nO SALDO ATUAL É: R$ {saldo:.2f}")
 
     else:
-        print("Informe um valor acima de R$ 0,00")
+        print("[!] INFORME UM VALOR ACIMA DE R$ 0,00")
 
     return saldo, extrato
 def fsaque(*, valor_saque, limite, saldo, extrato):
@@ -125,12 +105,12 @@ def fsaque(*, valor_saque, limite, saldo, extrato):
     # validacao_3 - validação de saldo acima de R$ 0,00 ou se saque não deixa saldo negativo
     elif validacao_1 and validacao_2 and validacao_3:
 
-        extrato += (f"> Saque:\tR$ {valor_saque:.2f} (-)\n")
+        extrato += (f"> SAQUE:\tR$ {valor_saque:.2f} (-)\n")
         saldo -= valor_saque
         acumulador_valor_saque += valor_saque
         numero_saques += 1
 
-    print(f"O saldo atual é: R$ {saldo:.2f}")
+    print(f">> O SALDO ATUAL É: R$ {saldo:.2f}")
 
     return saldo, extrato
 def fextrato(saldo, /, *, extrato):
@@ -146,71 +126,105 @@ def fextrato(saldo, /, *, extrato):
 def cadastrar_usuario(cpf):
     
     if cadastro_usuario.get(cpf):
-        print(f"Cliente {cpf} já possui cadastro")
+        print(f"\n>> CLIENTE {cpf} JÁ POSSUI CADASTRO")
+        nome = cadastro_usuario[cpf]["nome"]
+        nascimento = cadastro_usuario[cpf]["nascimento"]
+        print(f"\n>> NOME: {nome}\n>> NASCIMENTO: {nascimento}")
 
     else:
-        nome = input("Nome: ").upper()
-        nascimento = input("Nascimento: ")
-        logradouro = input("Rua: ").upper()
-        num_casa = int(input("Número: "))
-        bairro = input("Bairro: ").upper()
-        cidade = input("Cidade: ").upper()
-        estado = input("Estado (sigla): ").upper()
+        nome = input("NOME: ").upper()
+        nascimento = input("NASCIMENTO: ")
+        logradouro = input("RUA: ").upper()
+        num_casa = int(input("NÚMERO: "))
+        bairro = input("BAIRRO: ").upper()
+        cidade = input("CIDADE: ").upper()
+        estado = input("ESTADO (SIGLA): ").upper()
         cadastro_usuario[cpf] = {"nome": nome, "nascimento": nascimento, "logradouro": logradouro, "num_casa": num_casa, "bairro": bairro, "cidade": cidade, "estado": estado}
-
-    nome = cadastro_usuario[cpf]["nome"]
-    nascimento = cadastro_usuario[cpf]["nascimento"]
-    print(nome, nascimento)
 def listar_usuario():
 
     for usuario in cadastro_usuario:
-        print(f"NOME: {cadastro_usuario[usuario]['nome']} - CPF: {usuario}\nDATA DE NASCIMENTO: {cadastro_usuario[usuario]['nascimento']}\n")
+        print(f">> NOME: {cadastro_usuario[usuario]['nome']} - CPF: {usuario}\n>> DATA DE NASCIMENTO: {cadastro_usuario[usuario]['nascimento']}\n")
 def procurar_usuario():
     
-    usuario_procurado = input("Informe o CPF procurado: ")
+    usuario_procurado = input(">> INFORME O 'CPF': ")
     cpf = usuario_procurado
     if cpf in cadastro_usuario:
         valor_encontrado = cadastro_usuario[cpf]
-        print(f"\nUSUÁRIO ENCONTRADO\nNOME: {valor_encontrado['nome']}\nDATA DE NASCIMENTO: {valor_encontrado['nascimento']}")
+        print(f"\n>> USUÁRIO ENCONTRADO\n>> NOME: {valor_encontrado['nome']}\n>> DATA DE NASCIMENTO: {valor_encontrado['nascimento']}")
     else:
-        print(f"\nUSUÁRIO NÃO ENCONTRADO\nNÃO EXISTE CLIENTE CADASTRADO COM O CPF {cpf}")
+        print(f"\n>> USUÁRIO NÃO ENCONTRADO\n>> NÃO EXISTE CLIENTE CADASTRADO COM O CPF {cpf}")
+def cadastrar_conta(cpf):
+    
+    if cadastro_conta.get(cpf):
+        print(f"\n[!] CLIENTE {cpf} JÁ POSSUI UMA CONTA")
+        nome = cadastro_usuario[cpf]["nome"]
+        nascimento = cadastro_usuario[cpf]["nascimento"]
+        agencia = cadastro_conta[cpf]["agencia"]
+        conta = cadastro_conta[cpf]["conta"]
+        print(f"\n>> NOME: {nome}\n>> NASCIMENTO: {nascimento}\n>> AGÊNCIA: {agencia} // CONTA: {conta}")
+        
+        opcao = input("\n>> DESEJA CADASTRAR UMA NOVA CONTA PARA ESTE USUÁRIO? [S/N]\n>> ").upper()
+        
+        if opcao == "N":
+            return
+        
+        elif opcao == "S":
+            return
+            # implementar código para adicionar conta
+        
+    else:
+        return
+        # implementar código para adicionar conta
+def listar_contas():
+    
+    for conta in cadastro_conta:
+        print(f">> AGÊNCIA: {cadastro_conta[conta]['agencia']} - CONTA: {cadastro_conta[conta]['conta']}\n>> CPF: {conta}\n")
 
 while True:
     
-    opcao = input(menu).lower()
+    opcao = input(menu).upper()
 
-    if opcao == "q":
-        print('SAINDO DO SISTEMA...\n')
+    if opcao == "Q":
+        print('>> SAINDO DO SISTEMA...\n')
         break
 
-    elif opcao == "d":
-        print('DEPÓSITO\n')
-        valor_deposito = float(input("Informe o valor do depósito: R$ "))
+    elif opcao == "D":
+        print('=== DEPÓSITO ===\n')
+        valor_deposito = float(input(">> INFORME O VALOR DO DEPÓSITO: R$ "))
         saldo, extrato = fdeposito(saldo, extrato, valor_deposito)
     
-    elif opcao == "s":
-        print('SAQUE\n')
-        valor_saque = float(input("Informe o valor do saque: R$ "))
+    elif opcao == "S":
+        print('=== SAQUE ===\n')
+        valor_saque = float(input(">> INFORME O VALOR DO SAQUE: R$ "))
         saldo, extrato = fsaque(valor_saque=valor_saque, limite=limite, extrato=extrato, saldo=saldo)
 
-    elif opcao == "e":
-        print('EXTRATO\n')
+    elif opcao == "E":
+        print('=== EXTRATO ===\n')
         fextrato(saldo, extrato=extrato)
 
-    elif opcao == "c":
-        print("CADASTRAR NOVO USUÁRIO\n")
-        cpf = input("Digite o CPF do cliente: ")
+    elif opcao == "C":
+        print("=== CADASTRAR NOVO USUÁRIO ===\n")
+        cpf = input("INFORME O CPF: ")
         cadastrar_usuario(cpf)
 
-    elif opcao == "l":
-        print("LISTAR CLIENTES\n")
+    elif opcao == "L":
+        print("=== LISTAR CLIENTES ===\n")
         listar_usuario()
 
-    elif opcao == "p":
-        print("PROCURAR POR CLIENTE\n")
+    elif opcao == "P":
+        print("=== PROCURAR POR CLIENTE ===\n")
         procurar_usuario()
+
+    elif opcao == "N":
+        print("=== CADASTRAR NOVA CONTA ===\n")
+        cpf = input("INFORME O CPF: ")
+        cadastrar_conta(cpf)
     
+    elif opcao == "M":
+        print("=== LISTAR CONTAS ===\n")
+        listar_contas()
+
     else:
         print("""
-Comando desconhecido
-Selecione uma operação válida""")
+[!] COMANDO DESCOHECIDO
+[!] SELECIONE UMA OPÇÃO VÁLIDA""")
