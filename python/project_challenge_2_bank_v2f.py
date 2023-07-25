@@ -230,4 +230,3 @@ while True:
       print("""
 [!] COMANDO DESCOHECIDO
 [!] SELECIONE UMA OPÇÃO VÁLIDA""")
-        
