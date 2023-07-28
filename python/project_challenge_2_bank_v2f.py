@@ -156,7 +156,10 @@ def procurar_usuario():
   else:
     print(f"\n>> USUÁRIO NÃO ENCONTRADO\n>> NÃO EXISTE CLIENTE CADASTRADO COM O CPF {cpf}")
 def cadastrar_conta(cpf):
-    
+
+  ultimo_numero = cadastro_conta[cpf]["conta"]
+  print(f"<<< o ultimo numero de conta é: {ultimo_numero} >>>")
+
   if cadastro_conta.get(cpf):
     print(f"\n[!] CLIENTE {cpf} JÁ POSSUI UMA CONTA")
     nome = cadastro_usuario[cpf]["nome"]
@@ -171,8 +174,10 @@ def cadastrar_conta(cpf):
       return
     
     elif opcao == "S":
+      for valor in cadastro_conta.items():
+        lista_contas = valor[1]["conta"]
+        print(lista_contas)
       return
-      # implementar código para adicionar conta
       
   else:
     return
@@ -219,6 +224,11 @@ while True:
 
   elif opcao == "N":
     print("=== CADASTRAR NOVA CONTA ===\n")
+
+    for conta in cadastro_conta:
+      listar_contas = cadastro_conta[cpf]["conta"]
+      print(listar_contas)
+
     cpf = input("INFORME O CPF: ")
     cadastrar_conta(cpf)
     
