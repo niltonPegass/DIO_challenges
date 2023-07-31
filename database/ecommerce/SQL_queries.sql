@@ -1,10 +1,10 @@
---  RESPONDENDO PERGUNTAS COM QUERIES SQL  -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- --
--- -- -- -- -- -- -- -- -- -- -- -- -- --  -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- --
+--  RESPONDENDO PERGUNTAS COM QUERIES SQL  --
+-- -- -- -- -- -- -- -- -- -- -- -- -- --  --
 
 USE ECOMMERCE;
 SHOW TABLES;
 
--- -- -- -- -- -- -- -- -- -- -- -- -- --  -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- --
+-- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- --
 -- RECUPERANDO A QUANTIDADE (POR CLIENTE) DE PRODUTOS DENTRO DE UM MESMO PEDIDO AGRUPANDO DIVERSOS
 -- PRODUTOS EM UM MESMO "ID" DE PEDIDO E ORDENANDO PELA QUANTIDADE DE ITENS EM ORDEM DESCENDENTE
 -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- --
@@ -26,8 +26,7 @@ SELECT * FROM ORDERS;
 SELECT * FROM PRODUCT_ORDER;
 SELECT * FROM CLIENTS;
 
--- -- -- -- -- -- -- -- -- -- -- -- -- --  -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- --
-
+-- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- --
 -- RECUPERANDO OS PRODUTOS E SUAS CATEGORIAS QUE TEM O PREÇO MAIOR OU IGUAL A $250
 -- E QUAIS SUAS RESPECTIVAS NOTAS
 -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- --
@@ -51,7 +50,7 @@ FROM
     BATCH BA,
     PRODUCT_BATCH PB
 WHERE
-    PR.ID_PRODUCT = PB.ID_PRODUCT
+   	PR.ID_PRODUCT = PB.ID_PRODUCT
         AND PB.ID_BATCH = BA.ID_BATCH
 ORDER BY BATCH_NUMBER;
 
@@ -60,8 +59,7 @@ SELECT * FROM BATCH AS BA;
 SELECT * FROM PRODUCT_BATCH AS PB;
 SELECT * FROM PRODUCTS AS PR;
 
--- -- -- -- -- -- -- -- -- -- -- -- -- --  -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- --
-
+-- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- --
 -- RECUPERANDO QUAIS PEDIDOS FORAM FEITOS COM CARTÕES DE CRÉDITO,
 -- QUAIS FORAM OS CLIENTES E QUAL A BANDEIRA DOS CARTÕES
 -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- --
@@ -81,11 +79,9 @@ FROM PAYMENTS AS PA
 HAVING PA.ID_PAYMENT_CASH = 6
 	AND C2.ID_CREDIT_CARD != 5;
 	-- [!] COMO SGBD NÃO ACEITA CHAVES ESTRANGEIRAS NULAS "CREDIT CARD = 5" FOI CRIADO PARA SERVIR
-    -- [!] DE CHAVE ESTRANGEIRA NULA E "PAYMENT_CASH = 6" FOI CRIADO PARA A MESMA FINALIDADE
+	-- [!] DE CHAVE ESTRANGEIRA NULA E "PAYMENT_CASH = 6" FOI CRIADO PARA A MESMA FINALIDADE
 
 -- QUERIES AUXILIARES DA CONSULTA ACIMA
 SELECT * FROM PAYMENTS AS PA;
 SELECT * FROM PAYMENT_CREDIT_CARD AS PC;
 SELECT * FROM CREDIT_CARD AS C2;
-    
--- -- -- -- -- -- -- -- -- -- -- -- -- --  -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- --
