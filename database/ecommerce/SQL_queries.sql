@@ -1,5 +1,5 @@
---  RESPONDENDO PERGUNTAS COM QUERIES SQL  --
--- -- -- -- -- -- -- -- -- -- -- -- -- --  --
+--  RESPONDENDO PERGUNTAS COM QUERIES SQL --
+-- -- -- -- -- -- -- -- -- -- -- -- -- -- --
 
 USE ECOMMERCE;
 SHOW TABLES;
