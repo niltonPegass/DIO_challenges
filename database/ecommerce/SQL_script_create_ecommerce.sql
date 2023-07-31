@@ -1,5 +1,5 @@
--- SCRIPT PARA CRIAÇÃO DO BANCO DE DADOS  --
--- -- -- -- -- -- -- -- -- -- E-COMMERCE  --
+-- SCRIPT PARA CRIAÇÃO DO BANCO DE DADOS --
+-- -- -- -- -- -- -- -- -- -- E-COMMERCE --
 
 -- DROP DATABASE ECOMMERCE;
 CREATE DATABASE ECOMMERCE;
